@@ -20,16 +20,38 @@ A lightweight, customizable **range slider component** built from scratch for Re
 📦 Installation
 ---------------
 
+**npm**
 ```bash
 npm install react-native-range-slider
+```
+
+**yarn**
+```bash
+yarn add react-native-range-slider
+```
+
+**bun**
+```bash
+bun add react-native-range-slider
 ```
 
 ### Peer Dependencies
 
 Make sure you have the following dependencies installed in your project:
 
+**npm**
 ```bash
 npm install react-native-gesture-handler react-native-reanimated
+```
+
+**yarn**
+```bash
+yarn add react-native-gesture-handler react-native-reanimated
+```
+
+**bun**
+```bash
+bun add react-native-gesture-handler react-native-reanimated
 ```
 
 🚀 Usage
