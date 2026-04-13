@@ -1,4 +1,4 @@
-🎚️ React Native Range Slider
+🎚️ React Native Smooth Range Slider
 =============================
 
 A lightweight, customizable **range slider component** built from scratch for React Native.
@@ -22,17 +22,17 @@ A lightweight, customizable **range slider component** built from scratch for Re
 
 **npm**
 ```bash
-npm install react-native-range-slider
+npm install react-native-smooth-range-slider
 ```
 
 **yarn**
 ```bash
-yarn add react-native-range-slider
+yarn add react-native-smooth-range-slider
 ```
 
 **bun**
 ```bash
-bun add react-native-range-slider
+bun add react-native-smooth-range-slider
 ```
 
 ### Peer Dependencies
@@ -59,7 +59,7 @@ bun add react-native-gesture-handler react-native-reanimated
 
 ```tsx
 import React, { useState } from 'react';
-import RangeSlider from 'react-native-range-slider';
+import RangeSlider from 'react-native-smooth-range-slider';
 
 export default function App() {
   const [low, setLow] = useState(20);
@@ -154,10 +154,11 @@ Automatically adapts to RTL layouts or can be manually overridden via the `isRTL
 ---------------
 
 ```bash
-git clone https://github.com/VatsalPatadiya/react-native-range-slider
-cd react-native-range-slider
+git clone https://github.com/VatsalPatadiya/react-native-smooth-range-slider
+cd react-native-smooth-range-slider
 npm install
 ```
+
 
 📄 License
 ----------
