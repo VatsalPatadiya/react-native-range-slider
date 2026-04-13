@@ -1,3 +1,5 @@
+import React from 'react';
+
 export interface RangeSliderProps {
   /**
    * Minimum value of the slider.
@@ -24,6 +26,14 @@ export interface RangeSliderProps {
    * @default max
    */
   initialHighValue?: number;
+  /**
+   * Controlled low value.
+   */
+  lowValue?: number;
+  /**
+   * Controlled high value.
+   */
+  highValue?: number;
   /**
    * If true, the slider will only have one thumb.
    * @default false
@@ -89,6 +99,50 @@ export interface RangeSliderProps {
    */
   isRTL?: boolean;
   /**
+   * If true, show a tooltip above the thumb while dragging.
+   * @default false
+   */
+  showTooltip?: boolean;
+  /**
+   * Background color of the tooltip.
+   * @default '#3b82f6'
+   */
+  tooltipColor?: string;
+  /**
+   * Text color of the tooltip.
+   * @default '#ffffff'
+   */
+  tooltipTextColor?: string;
+  /**
+   * Font size of the tooltip text.
+   * @default 12
+   */
+  tooltipFontSize?: number;
+  /**
+   * Custom style for the tooltip container.
+   */
+  tooltipStyle?: any;
+  /**
+   * Custom style for the tooltip text.
+   */
+  tooltipTextStyle?: any;
+  /**
+   * If true, the tooltip is always visible.
+   * @default false
+   */
+  alwaysShowTooltip?: boolean;
+  activeTrackColorStops?: { percent: number; color: string }[];
+  /**
+   * If true, enable color stops for the active track.
+   * @default !!activeTrackColorStops
+   */
+  enableColorStops?: boolean;
+  /**
+   * Which value to use as reference for color stops interpolation.
+   * @default 'low'
+   */
+  colorStopReference?: 'low' | 'high' | 'center';
+  /**
    * Style for the container.
    */
   style?: any;
@@ -106,6 +160,14 @@ export interface ThumbProps {
   renderLabel?: (value: number) => React.ReactNode;
   value: any; // SharedValue<number>
   updatePosition: (absoluteX: number) => void;
+  zIndex?: any; // SharedValue<number>
+  showTooltip?: boolean;
+  tooltipColor?: string;
+  tooltipTextColor?: string;
+  tooltipFontSize?: number;
+  tooltipStyle?: any;
+  tooltipTextStyle?: any;
+  alwaysShowTooltip?: boolean;
 }
 
 export interface TrackProps {
@@ -116,4 +178,9 @@ export interface TrackProps {
   highPosition: any; // SharedValue<number>
   thumbSize: number;
   singleThumbMode?: boolean;
+  activeTrackColorStops?: { percent: number; color: string }[];
+  enableColorStops?: boolean;
+  lowValuePercent: any; // SharedValue<number>
+  highValuePercent: any; // SharedValue<number>
+  colorStopReference?: 'low' | 'high' | 'center';
 }
