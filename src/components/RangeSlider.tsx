@@ -12,6 +12,8 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
   step = 1,
   initialLowValue,
   initialHighValue,
+  lowValue,
+  highValue,
   singleThumbMode = false,
   disabled = false,
   inactiveTrackColor = '#e5e7eb',
@@ -26,17 +28,31 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
   lowThumbAccessibilityLabel = 'Lower thumb',
   highThumbAccessibilityLabel = 'Higher thumb',
   isRTL: isRTLProp,
+  showTooltip = false,
+  tooltipColor,
+  tooltipTextColor,
+  tooltipFontSize,
+  tooltipStyle,
+  tooltipTextStyle,
+  alwaysShowTooltip = false,
+  activeTrackColorStops,
+  enableColorStops,
+  colorStopReference,
   style,
 }) => {
   const isRTL = isRTLProp ?? I18nManager.isRTL;
   const containerWidth = useSharedValue(0);
   const leftOffset = useSharedValue(0);
+  const lowZIndex = useSharedValue(1);
+  const highZIndex = useSharedValue(1);
 
   const {
-    lowValue,
-    highValue,
+    lowValue: lowValueShared,
+    highValue: highValueShared,
     lowPosition,
     highPosition,
+    lowValuePercent,
+    highValuePercent,
     updateLowValue,
     updateHighValue,
   } = useRangeSlider({
@@ -45,6 +61,8 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
     step,
     initialLowValue: initialLowValue ?? min,
     initialHighValue: initialHighValue ?? max,
+    lowValue,
+    highValue,
     containerWidth,
     onValueChange,
     singleThumbMode,
@@ -65,17 +83,34 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
 
   const handleUpdateLow = (absoluteX: number) => {
     'worklet';
+    lowZIndex.value = 2;
+    highZIndex.value = 1;
     updateLowValue(absoluteX - leftOffset.value);
   };
 
   const handleUpdateHigh = (absoluteX: number) => {
     'worklet';
+    lowZIndex.value = 1;
+    highZIndex.value = 2;
     updateHighValue(absoluteX - leftOffset.value);
+  };
+
+  const handleSlidingStart = (index: 0 | 1) => {
+    if (index === 0) {
+      lowZIndex.value = 2;
+      highZIndex.value = 1;
+    } else {
+      lowZIndex.value = 1;
+      highZIndex.value = 2;
+    }
+    if (onSlidingStart) {
+      onSlidingStart();
+    }
   };
 
   const handleSlidingComplete = () => {
     if (onSlidingComplete) {
-      onSlidingComplete(lowValue.value, highValue.value);
+      onSlidingComplete(lowValueShared.value, highValueShared.value);
     }
   };
 
@@ -92,6 +127,11 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
         highPosition={highPosition}
         thumbSize={thumbSize}
         singleThumbMode={singleThumbMode}
+        activeTrackColorStops={activeTrackColorStops}
+        enableColorStops={enableColorStops}
+        lowValuePercent={lowValuePercent}
+        highValuePercent={highValuePercent}
+        colorStopReference={colorStopReference}
       />
       <Thumb
         index={0}
@@ -99,12 +139,20 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
         color={thumbColor}
         position={lowPosition}
         disabled={disabled}
-        onSlidingStart={onSlidingStart}
+        onSlidingStart={() => handleSlidingStart(0)}
         onSlidingComplete={handleSlidingComplete}
         accessibilityLabel={lowThumbAccessibilityLabel}
         renderLabel={renderLabel}
-        value={lowValue}
+        value={lowValueShared}
         updatePosition={handleUpdateLow}
+        zIndex={lowZIndex}
+        showTooltip={showTooltip}
+        tooltipColor={tooltipColor}
+        tooltipTextColor={tooltipTextColor}
+        tooltipFontSize={tooltipFontSize}
+        tooltipStyle={tooltipStyle}
+        tooltipTextStyle={tooltipTextStyle}
+        alwaysShowTooltip={alwaysShowTooltip}
       />
       {!singleThumbMode && (
         <Thumb
@@ -113,12 +161,20 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
           color={thumbColor}
           position={highPosition}
           disabled={disabled}
-          onSlidingStart={onSlidingStart}
+          onSlidingStart={() => handleSlidingStart(1)}
           onSlidingComplete={handleSlidingComplete}
           accessibilityLabel={highThumbAccessibilityLabel}
           renderLabel={renderLabel}
-          value={highValue}
+          value={highValueShared}
           updatePosition={handleUpdateHigh}
+          zIndex={highZIndex}
+          showTooltip={showTooltip}
+          tooltipColor={tooltipColor}
+          tooltipTextColor={tooltipTextColor}
+          tooltipFontSize={tooltipFontSize}
+          tooltipStyle={tooltipStyle}
+          tooltipTextStyle={tooltipTextStyle}
+          alwaysShowTooltip={alwaysShowTooltip}
         />
       )}
     </View>
