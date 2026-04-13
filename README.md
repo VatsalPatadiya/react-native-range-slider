@@ -9,95 +9,133 @@ A lightweight, customizable **range slider component** built from scratch for Re
 ----------
 
 *   Dual thumb range slider (min & max)
-    
 *   Single thumb mode
-    
 *   Smooth gesture handling
-    
-*   Fully customizable UI
-    
+*   Fully customizable UI (colors, sizes, etc.)
 *   Step-based snapping
-    
 *   RTL support
-    
 *   Accessibility support
-    
-*   High performance (Reanimated support)
-    
+*   High performance (Built with React Native Reanimated)
 
 📦 Installation
 ---------------
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   npm install your-range-slider-library   `
+```bash
+npm install react-native-range-slider
+```
 
 ### Peer Dependencies
 
-Make sure you have:
+Make sure you have the following dependencies installed in your project:
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   npm install react-native-gesture-handler react-native-reanimated   `
+```bash
+npm install react-native-gesture-handler react-native-reanimated
+```
 
 🚀 Usage
 --------
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   import RangeSlider from 'your-range-slider-library';  export default function App() {    return (   `
+```tsx
+import React, { useState } from 'react';
+import RangeSlider from 'react-native-range-slider';
 
-          `min={0}        max={100}        initialLowValue={20}        initialHighValue={80}        step={1}        onValueChange={(low, high) => {          console.log(low, high);        }}      />    );  }`
+export default function App() {
+  const [low, setLow] = useState(20);
+  const [high, setHigh] = useState(80);
+
+  return (
+    <RangeSlider
+      min={0}
+      max={100}
+      step={1}
+      initialLowValue={low}
+      initialHighValue={high}
+      onValueChange={(low, high) => {
+        setLow(low);
+        setHigh(high);
+        console.log(low, high);
+      }}
+    />
+  );
+}
+```
 
 ⚙️ Props
 --------
 
-PropTypeDefaultDescriptionminnumber0Minimum valuemaxnumber100Maximum valuestepnumber1Step intervalinitialLowValuenumberminInitial low valueinitialHighValuenumbermaxInitial high valuesingleThumbbooleanfalseEnable single thumb modedisabledbooleanfalseDisable slider
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `min` | `number` | `0` | Minimum value of the slider. |
+| `max` | `number` | `100` | Maximum value of the slider. |
+| `step` | `number` | `1` | Step interval for snapping. |
+| `initialLowValue` | `number` | `min` | Initial low value. |
+| `initialHighValue` | `number` | `max` | Initial high value. |
+| `singleThumbMode` | `boolean` | `false` | Enable single thumb mode. |
+| `disabled` | `boolean` | `false` | Disable the slider interactions. |
+| `renderLabel` | `(value: number) => ReactNode` | `undefined` | Custom renderer for thumb labels. |
+| `isRTL` | `boolean` | `I18nManager.isRTL` | Support for Right-to-Left layouts. |
 
 ### 🎨 Styling Props
 
-PropTypeDescriptiontrackHeightnumberHeight of tracktrackColorstringInactive track coloractiveTrackColorstringActive track colorthumbColorstringThumb colorthumbSizenumberThumb size
+| Prop | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `trackHeight` | `number` | `4` | Height of the track. |
+| `inactiveTrackColor` | `string` | `#e5e7eb` | Color of the inactive track. |
+| `activeTrackColor` | `string` | `#3b82f6` | Color of the active track. |
+| `thumbColor` | `string` | `#ffffff` | Color of the thumb. |
+| `thumbSize` | `number` | `24` | Size (diameter) of the thumb. |
 
 ### 📡 Callbacks
 
-CallbackDescriptiononValueChangeCalled while slidingonSlidingStartCalled when user starts slidingonSlidingCompleteCalled when sliding ends
+| Callback | Description |
+| :--- | :--- |
+| `onValueChange` | Called while sliding with `(low, high)`. |
+| `onSlidingStart` | Called when the user starts sliding. |
+| `onSlidingComplete` | Called when sliding ends with `(low, high)`. |
 
 🧠 How It Works
 ---------------
 
-*   Uses **PanGestureHandler** for drag interactions
-    
-*   Uses **Reanimated** for smooth UI updates
-    
-*   Calculates thumb position based on:
-    
-    *   slider width
-        
-    *   min/max range
-        
-    *   step value
-        
+*   Uses **PanGestureHandler** for smooth and responsive drag interactions.
+*   Uses **Reanimated** for high-performance UI updates and layout transitions.
+*   Calculates thumb positions dynamically based on slider width, range, and step values.
 
 📱 Example
 ----------
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML
-
-  `min={0}    max={500}    initialLowValue={50}    initialHighValue={300}    step={10}    trackColor="#ddd"    activeTrackColor="#4CAF50"    thumbColor="#4CAF50"  />`
+```tsx
+<RangeSlider
+  min={0}
+  max={500}
+  initialLowValue={50}
+  initialHighValue={300}
+  step={10}
+  inactiveTrackColor="#ddd"
+  activeTrackColor="#4CAF50"
+  thumbColor="#4CAF50"
+/>
+```
 
 ♿ Accessibility
 ---------------
 
-*   Screen reader support
-    
-*   Adjustable values via gestures
-    
-*   Accessible labels for thumbs
-    
+*   Full screen reader support.
+*   Adjustable values via gestures.
+*   Customizable accessible labels for thumbs.
 
 🌍 RTL Support
 --------------
 
-Automatically adapts to RTL layouts.
+Automatically adapts to RTL layouts or can be manually overridden via the `isRTL` prop.
 
 🛠️ Development
 ---------------
 
-Plain textANTLR4BashCC#CSSCoffeeScriptCMakeDartDjangoDockerEJSErlangGitGoGraphQLGroovyHTMLJavaJavaScriptJSONJSXKotlinLaTeXLessLuaMakefileMarkdownMATLABMarkupObjective-CPerlPHPPowerShell.propertiesProtocol BuffersPythonRRubySass (Sass)Sass (Scss)SchemeSQLShellSwiftSVGTSXTypeScriptWebAssemblyYAMLXML`   git clone https://github.com/your-repo/range-slider  cd range-slider  npm install   `
+```bash
+git clone https://github.com/VatsalPatadiya/react-native-range-slider
+cd react-native-range-slider
+npm install
+```
 
 📄 License
 ----------
@@ -108,25 +146,19 @@ MIT License
 ---------------
 
 Contributions are welcome!
-
-*   Fork the repo
-    
-*   Create a feature branch
-    
-*   Submit a PR
-    
+1. Fork the repo
+2. Create your feature branch (`git checkout -b feature/fooBar`)
+3. Commit your changes (`git commit -am 'Add some fooBar'`)
+4. Push to the branch (`git push origin feature/fooBar`)
+5. Create a new Pull Request
 
 💡 Future Improvements
 ----------------------
 
 *   Vertical slider support
-    
-*   Tooltip formatting
-    
-*   Multi-range sliders
-    
-*   Animated labels
-    
+*   Tooltip formatting options
+*   Multi-range sliders (3+ thumbs)
+*   Animated label transitions
 
 👨‍💻 Author
 ------------
