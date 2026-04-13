@@ -28,69 +28,77 @@ const Example = () => {
         <Text style={styles.title}>Range Slider Demo</Text>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Default Range Slider</Text>
+          <Text style={styles.sectionTitle}>Custom Tooltip (Default & Custom Styling)</Text>
           <RangeSlider
             min={0}
             max={100}
-            step={1}
+            initialLowValue={20}
+            initialHighValue={80}
+            showTooltip
+          />
+          <View style={{ height: 20 }} />
+          <RangeSlider
+            min={0}
+            max={500}
+            initialLowValue={100}
+            initialHighValue={400}
+            showTooltip
+            tooltipColor="#10b981"
+            tooltipTextColor="#fff"
+            tooltipFontSize={14}
+          />
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Dynamic Background Color Stops (Single Mode)</Text>
+          <RangeSlider
+            min={0}
+            max={100}
+            initialLowValue={singleValue}
+            singleThumbMode
+            onValueChange={(val) => setSingleValue(val)}
+            enableColorStops={true}
+            activeTrackColorStops={[
+              { percent: 0, color: '#ef4444' },    // Red
+              { percent: 50, color: '#f59e0b' },   // Orange
+              { percent: 100, color: '#10b981' }  // Green
+            ]}
+          />
+          <Text style={styles.valueText}>Percentage-based Color: {Math.round(singleValue)}%</Text>
+        </View>
+
+        <View style={styles.section}>
+          <Text style={styles.sectionTitle}>Range Slider with Color Stops (Center Reference)</Text>
+          <RangeSlider
+            min={0}
+            max={100}
+            lowValue={range.low}
+            highValue={range.high}
             onValueChange={handleRangeChange}
+            enableColorStops={true}
+            colorStopReference="center"
+            activeTrackColorStops={[
+              { percent: 0, color: '#3b82f6' },    // Blue
+              { percent: 50, color: '#8b5cf6' },   // Purple
+              { percent: 100, color: '#ec4899' }  // Pink
+            ]}
+            showTooltip
           />
           <Text style={styles.valueText}>
-            Low: {Math.round(range.low)} | High: {Math.round(range.high)}
+            Color changes based on Range Center: {Math.round((range.low + range.high) / 2)}%
           </Text>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Single Thumb Mode (Step 5)</Text>
-          <RangeSlider
-            min={0}
-            max={100}
-            step={5}
-            singleThumbMode
-            onValueChange={handleSingleChange}
-            activeTrackColor="#10b981"
-            thumbColor="#10b981"
-          />
-          <Text style={styles.valueText}>Value: {Math.round(singleValue)}</Text>
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>With Labels & Custom Styling</Text>
-          <RangeSlider
-            min={0}
-            max={1000}
-            step={10}
-            initialLowValue={200}
-            initialHighValue={800}
-            renderLabel={renderLabel}
-            trackHeight={6}
-            thumbSize={32}
-            activeTrackColor="#f59e0b"
-            thumbColor="#ffffff"
-          />
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Disabled State</Text>
-          <RangeSlider
-            min={0}
-            max={100}
-            disabled
-            initialLowValue={30}
-            initialHighValue={70}
-            inactiveTrackColor="#d1d5db"
-          />
-        </View>
-
-        <View style={styles.section}>
-          <Text style={styles.sectionTitle}>RTL Support (Manual Override)</Text>
+          <Text style={styles.sectionTitle}>RTL Support & Permanent Tooltips</Text>
           <RangeSlider
             min={0}
             max={100}
             isRTL={true}
             activeTrackColor="#8b5cf6"
+            showTooltip
+            alwaysShowTooltip
           />
-          <Text style={styles.subtitle}>(Notice Min is on the right, Max on the left)</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

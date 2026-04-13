@@ -1,6 +1,6 @@
 import { useSharedValue, useDerivedValue, runOnJS } from 'react-native-reanimated';
 import { valueToPosition, positionToValue, snapToStep, clamp } from '../utils/math';
-import { useCallback } from 'react';
+import { useCallback, useEffect } from 'react';
 
 interface UseRangeSliderProps {
   min: number;
@@ -8,6 +8,8 @@ interface UseRangeSliderProps {
   step: number;
   initialLowValue: number;
   initialHighValue: number;
+  lowValue?: number;
+  highValue?: number;
   containerWidth: any; // SharedValue<number>
   onValueChange?: (low: number, high: number) => void;
   singleThumbMode?: boolean;
@@ -20,23 +22,37 @@ export const useRangeSlider = ({
   step,
   initialLowValue,
   initialHighValue,
+  lowValue,
+  highValue,
   containerWidth,
   onValueChange,
   singleThumbMode,
   isRTL = false,
 }: UseRangeSliderProps) => {
-  const lowValue = useSharedValue(initialLowValue);
-  const highValue = useSharedValue(initialHighValue);
+  const lowValueShared = useSharedValue(lowValue ?? initialLowValue);
+  const highValueShared = useSharedValue(highValue ?? initialHighValue);
+
+  useEffect(() => {
+    if (lowValue !== undefined) {
+      lowValueShared.value = lowValue;
+    }
+  }, [lowValue]);
+
+  useEffect(() => {
+    if (highValue !== undefined) {
+      highValueShared.value = highValue;
+    }
+  }, [highValue]);
 
   const lowPosition = useDerivedValue(() => {
-    return valueToPosition(lowValue.value, min, max, containerWidth.value, isRTL);
+    return valueToPosition(lowValueShared.value, min, max, containerWidth.value, isRTL);
   });
 
   const highPosition = useDerivedValue(() => {
     if (singleThumbMode) {
       return isRTL ? 0 : containerWidth.value;
     }
-    return valueToPosition(highValue.value, min, max, containerWidth.value, isRTL);
+    return valueToPosition(highValueShared.value, min, max, containerWidth.value, isRTL);
   });
 
   const updateLowValue = useCallback((newPosition: number) => {
@@ -45,14 +61,14 @@ export const useRangeSlider = ({
     newValue = snapToStep(newValue, min, max, step);
     
     // Check if it crosses high thumb
-    if (!singleThumbMode && newValue > highValue.value) {
-      newValue = highValue.value;
+    if (!singleThumbMode && newValue > highValueShared.value) {
+      newValue = highValueShared.value;
     }
     
-    if (lowValue.value !== newValue) {
-      lowValue.value = newValue;
+    if (lowValueShared.value !== newValue) {
+      lowValueShared.value = newValue;
       if (onValueChange) {
-        runOnJS(onValueChange)(newValue, highValue.value);
+        runOnJS(onValueChange)(newValue, highValueShared.value);
       }
     }
   }, [min, max, step, onValueChange, singleThumbMode, isRTL]);
@@ -65,23 +81,33 @@ export const useRangeSlider = ({
     newValue = snapToStep(newValue, min, max, step);
     
     // Check if it crosses low thumb
-    if (newValue < lowValue.value) {
-      newValue = lowValue.value;
+    if (newValue < lowValueShared.value) {
+      newValue = lowValueShared.value;
     }
     
-    if (highValue.value !== newValue) {
-      highValue.value = newValue;
+    if (highValueShared.value !== newValue) {
+      highValueShared.value = newValue;
       if (onValueChange) {
-        runOnJS(onValueChange)(lowValue.value, newValue);
+        runOnJS(onValueChange)(lowValueShared.value, newValue);
       }
     }
   }, [min, max, step, onValueChange, singleThumbMode, isRTL]);
 
+  const lowValuePercent = useDerivedValue(() => {
+    return (lowValueShared.value - min) / (max - min);
+  });
+
+  const highValuePercent = useDerivedValue(() => {
+    return (highValueShared.value - min) / (max - min);
+  });
+
   return {
-    lowValue,
-    highValue,
+    lowValue: lowValueShared,
+    highValue: highValueShared,
     lowPosition,
     highPosition,
+    lowValuePercent,
+    highValuePercent,
     updateLowValue,
     updateHighValue,
   };
