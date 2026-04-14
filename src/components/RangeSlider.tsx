@@ -39,6 +39,15 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
   enableColorStops,
   colorStopReference,
   style,
+  thumbStyle,
+  activeTrackStyle,
+  inactiveTrackStyle,
+  trackContainerStyle,
+  tooltipInnerStyle,
+  tooltipPointerStyle,
+  thumbInnerStyle,
+  labelContainerStyle,
+  renderTooltip,
 }) => {
   const isRTL = isRTLProp ?? I18nManager.isRTL;
   const containerWidth = useSharedValue(0);
@@ -76,7 +85,7 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
       },
     }: LayoutChangeEvent) => {
       containerWidth.value = width - thumbSize;
-      leftOffset.value = x + thumbSize / 2;
+      leftOffset.value = x;
     },
     [thumbSize]
   );
@@ -85,14 +94,14 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
     'worklet';
     lowZIndex.value = 2;
     highZIndex.value = 1;
-    updateLowValue(absoluteX - leftOffset.value);
+    updateLowValue(absoluteX - leftOffset.value - thumbSize / 2);
   };
 
   const handleUpdateHigh = (absoluteX: number) => {
     'worklet';
     lowZIndex.value = 1;
     highZIndex.value = 2;
-    updateHighValue(absoluteX - leftOffset.value);
+    updateHighValue(absoluteX - leftOffset.value - thumbSize / 2);
   };
 
   const handleSlidingStart = (index: 0 | 1) => {
@@ -132,6 +141,9 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
         lowValuePercent={lowValuePercent}
         highValuePercent={highValuePercent}
         colorStopReference={colorStopReference}
+        activeStyle={activeTrackStyle}
+        inactiveStyle={inactiveTrackStyle}
+        containerStyle={trackContainerStyle}
       />
       <Thumb
         index={0}
@@ -153,6 +165,12 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
         tooltipStyle={tooltipStyle}
         tooltipTextStyle={tooltipTextStyle}
         alwaysShowTooltip={alwaysShowTooltip}
+        renderTooltip={renderTooltip}
+        customStyle={thumbStyle}
+        tooltipInnerStyle={tooltipInnerStyle}
+        tooltipPointerStyle={tooltipPointerStyle}
+        innerThumbStyle={thumbInnerStyle}
+        labelContainerStyle={labelContainerStyle}
       />
       {!singleThumbMode && (
         <Thumb
@@ -175,6 +193,12 @@ const RangeSlider: React.FC<RangeSliderProps> = ({
           tooltipStyle={tooltipStyle}
           tooltipTextStyle={tooltipTextStyle}
           alwaysShowTooltip={alwaysShowTooltip}
+          renderTooltip={renderTooltip}
+          customStyle={thumbStyle}
+          tooltipInnerStyle={tooltipInnerStyle}
+          tooltipPointerStyle={tooltipPointerStyle}
+          innerThumbStyle={thumbInnerStyle}
+          labelContainerStyle={labelContainerStyle}
         />
       )}
     </View>
@@ -186,6 +210,7 @@ const styles = StyleSheet.create({
     width: '100%',
     justifyContent: 'center',
     marginVertical: 10,
+    overflow: 'visible',
   },
 });
 

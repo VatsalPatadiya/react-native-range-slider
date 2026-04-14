@@ -1,4 +1,6 @@
 import React from 'react';
+import { StyleProp, ViewStyle, TextStyle } from 'react-native';
+import { SharedValue } from 'react-native-reanimated';
 
 export interface RangeSliderProps {
   /**
@@ -121,16 +123,19 @@ export interface RangeSliderProps {
   /**
    * Custom style for the tooltip container.
    */
-  tooltipStyle?: any;
+  tooltipStyle?: StyleProp<ViewStyle>;
   /**
    * Custom style for the tooltip text.
    */
-  tooltipTextStyle?: any;
+  tooltipTextStyle?: StyleProp<TextStyle>;
   /**
    * If true, the tooltip is always visible.
    * @default false
    */
   alwaysShowTooltip?: boolean;
+  /**
+   * Percentage-based color stops for the active track.
+   */
   activeTrackColorStops?: { percent: number; color: string }[];
   /**
    * If true, enable color stops for the active track.
@@ -145,42 +150,88 @@ export interface RangeSliderProps {
   /**
    * Style for the container.
    */
-  style?: any;
+  style?: StyleProp<ViewStyle>;
+  /**
+   * Style for the thumb.
+   */
+  thumbStyle?: StyleProp<ViewStyle>;
+  /**
+   * Style for the active track.
+   */
+  activeTrackStyle?: StyleProp<ViewStyle>;
+  /**
+   * Style for the inactive track.
+   */
+  inactiveTrackStyle?: StyleProp<ViewStyle>;
+  /**
+   * Style for the track container.
+   */
+  trackContainerStyle?: StyleProp<ViewStyle>;
+  /**
+   * Style for the tooltip inner view.
+   */
+  tooltipInnerStyle?: StyleProp<ViewStyle>;
+  /**
+   * Style for the tooltip pointer (arrow).
+   */
+  tooltipPointerStyle?: StyleProp<ViewStyle>;
+  /**
+   * Style for the actual thumb circle.
+   */
+  thumbInnerStyle?: StyleProp<ViewStyle>;
+  /**
+   * Style for the custom label container.
+   */
+  labelContainerStyle?: StyleProp<ViewStyle>;
+  /**
+   * Custom renderer for the tooltip value.
+   */
+  renderTooltip?: (value: number) => React.ReactNode;
 }
 
 export interface ThumbProps {
   index: 0 | 1;
   size: number;
   color: string;
-  position: any; // SharedValue<number>
+  position: SharedValue<number>;
   disabled?: boolean;
   onSlidingStart?: () => void;
   onSlidingComplete?: () => void;
   accessibilityLabel?: string;
   renderLabel?: (value: number) => React.ReactNode;
-  value: any; // SharedValue<number>
+  value: SharedValue<number>;
   updatePosition: (absoluteX: number) => void;
-  zIndex?: any; // SharedValue<number>
+  zIndex?: SharedValue<number>;
   showTooltip?: boolean;
   tooltipColor?: string;
   tooltipTextColor?: string;
   tooltipFontSize?: number;
-  tooltipStyle?: any;
-  tooltipTextStyle?: any;
+  tooltipStyle?: StyleProp<ViewStyle>;
+  tooltipTextStyle?: StyleProp<TextStyle>;
   alwaysShowTooltip?: boolean;
+  customStyle?: StyleProp<ViewStyle>;
+  tooltipInnerStyle?: StyleProp<ViewStyle>;
+  tooltipPointerStyle?: StyleProp<ViewStyle>;
+  innerThumbStyle?: StyleProp<ViewStyle>;
+  labelContainerStyle?: StyleProp<ViewStyle>;
+  renderTooltip?: (value: number) => React.ReactNode;
 }
 
 export interface TrackProps {
   height: number;
   inactiveColor: string;
   activeColor: string;
-  lowPosition: any; // SharedValue<number>
-  highPosition: any; // SharedValue<number>
+  lowPosition: SharedValue<number>;
+  highPosition: SharedValue<number>;
   thumbSize: number;
   singleThumbMode?: boolean;
   activeTrackColorStops?: { percent: number; color: string }[];
   enableColorStops?: boolean;
-  lowValuePercent: any; // SharedValue<number>
-  highValuePercent: any; // SharedValue<number>
+  lowValuePercent: SharedValue<number>;
+  highValuePercent: SharedValue<number>;
   colorStopReference?: 'low' | 'high' | 'center';
+  activeStyle?: StyleProp<ViewStyle>;
+  inactiveStyle?: StyleProp<ViewStyle>;
+  containerStyle?: StyleProp<ViewStyle>;
 }
+

@@ -1,4 +1,4 @@
-import { useSharedValue, useDerivedValue, runOnJS } from 'react-native-reanimated';
+import { SharedValue, useSharedValue, useDerivedValue, runOnJS } from 'react-native-reanimated';
 import { valueToPosition, positionToValue, snapToStep, clamp } from '../utils/math';
 import { useCallback, useEffect } from 'react';
 
@@ -10,7 +10,7 @@ interface UseRangeSliderProps {
   initialHighValue: number;
   lowValue?: number;
   highValue?: number;
-  containerWidth: any; // SharedValue<number>
+  containerWidth: SharedValue<number>;
   onValueChange?: (low: number, high: number) => void;
   singleThumbMode?: boolean;
   isRTL?: boolean;
