@@ -31,6 +31,12 @@ const Thumb: React.FC<ThumbProps> = ({
   tooltipStyle,
   tooltipTextStyle,
   alwaysShowTooltip = false,
+  renderTooltip,
+  customStyle,
+  tooltipInnerStyle,
+  tooltipPointerStyle,
+  innerThumbStyle,
+  labelContainerStyle,
 }) => {
   const isDragging = useSharedValue(false);
 
@@ -61,7 +67,7 @@ const Thumb: React.FC<ThumbProps> = ({
     return {
       zIndex: zIndex ? zIndex.value : 1,
       transform: [
-        { translateX: position.value - size / 2 },
+        { translateX: position.value },
         { scale: withSpring(isDragging.value ? 1.15 : 1) },
       ],
     };
@@ -83,6 +89,7 @@ const Thumb: React.FC<ThumbProps> = ({
           styles.thumbContainer,
           { width: size, height: size },
           animatedStyle,
+          customStyle,
         ]}
         accessibilityRole="adjustable"
         accessibilityLabel={accessibilityLabel}
@@ -92,12 +99,12 @@ const Thumb: React.FC<ThumbProps> = ({
       >
         {showTooltip && (
           <Animated.View style={[styles.tooltipContainer, tooltipAnimatedStyle, tooltipStyle]}>
-            <View style={[styles.tooltip, { backgroundColor: tooltipColor }]}>
+            <View style={[styles.tooltip, { backgroundColor: tooltipColor }, tooltipInnerStyle]}>
               <Animated.Text style={[styles.tooltipText, { color: tooltipTextColor, fontSize: tooltipFontSize }, tooltipTextStyle]}>
-                {Math.round(value.value)}
+                {renderTooltip ? renderTooltip(Math.round(value.value)) : Math.round(value.value)}
               </Animated.Text>
             </View>
-            <View style={[styles.tooltipPointer, { borderTopColor: tooltipColor }]} />
+            <View style={[styles.tooltipPointer, { borderTopColor: tooltipColor }, tooltipPointerStyle]} />
           </Animated.View>
         )}
         <View
@@ -110,10 +117,11 @@ const Thumb: React.FC<ThumbProps> = ({
               backgroundColor: color,
             },
             styles.shadow,
+            innerThumbStyle,
           ]}
         />
         {renderLabel && (
-          <View style={styles.labelContainer}>
+          <View style={[styles.labelContainer, labelContainerStyle]}>
             {renderLabel(value.value)}
           </View>
         )}

@@ -15,10 +15,13 @@ const Track: React.FC<TrackProps> = ({
   lowValuePercent,
   highValuePercent,
   colorStopReference = 'low',
+  activeStyle,
+  inactiveStyle,
+  containerStyle,
 }) => {
   const activeTrackStyle = useAnimatedStyle(() => {
     let finalActiveColor = activeColor;
-    if (enableColorStops !== false && activeTrackColorStops && activeTrackColorStops.length >= 2) {
+    if (enableColorStops && activeTrackColorStops && activeTrackColorStops.length >= 2) {
       let referenceValue = lowValuePercent.value;
       if (colorStopReference === 'high') {
         referenceValue = highValuePercent.value;
@@ -26,26 +29,35 @@ const Track: React.FC<TrackProps> = ({
         referenceValue = (lowValuePercent.value + highValuePercent.value) / 2;
       }
 
-      finalActiveColor = interpolateColor(
-        referenceValue,
-        activeTrackColorStops.map((s) => s.percent / 100),
-        activeTrackColorStops.map((s) => s.color)
-      );
+      const inputRange = activeTrackColorStops.map((s) => s.percent / 100);
+      const outputRange = activeTrackColorStops.map((s) => s.color);
+
+      // Validate that all colors are defined and we have at least 2 stops
+      const validStops = inputRange.length >= 2 && outputRange.every(c => c !== undefined);
+
+      if (validStops) {
+        finalActiveColor = interpolateColor(
+          referenceValue,
+          inputRange,
+          outputRange as string[]
+        );
+      }
     }
 
     return {
-      left: lowPosition.value,
-      width: Math.max(0, highPosition.value - lowPosition.value),
+      left: Math.min(lowPosition.value, highPosition.value) + thumbSize / 2,
+      width: Math.abs(highPosition.value - lowPosition.value),
       backgroundColor: finalActiveColor,
     };
   });
 
   return (
-    <View style={[styles.container, { height, marginHorizontal: thumbSize / 2 }]}>
+    <View style={[styles.container, { height }, containerStyle]}>
       <View
         style={[
           styles.inactiveTrack,
           { backgroundColor: inactiveColor, height, borderRadius: height / 2 },
+          inactiveStyle,
         ]}
       />
       <Animated.View
@@ -53,6 +65,7 @@ const Track: React.FC<TrackProps> = ({
           styles.activeTrack,
           { height, borderRadius: height / 2 },
           activeTrackStyle,
+          activeStyle,
         ]}
       />
     </View>
