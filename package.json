@@ -1,13 +1,12 @@
 {
   "name": "react-native-smooth-range-slider",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "A lightweight, customizable range slider component for React Native.",
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
   "files": [
     "dist",
-    "src",
     "README.md"
   ],
   "scripts": {

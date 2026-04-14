@@ -50,7 +50,7 @@ export const useRangeSlider = ({
 
   const highPosition = useDerivedValue(() => {
     if (singleThumbMode) {
-      return isRTL ? 0 : containerWidth.value;
+      return valueToPosition(min, min, max, containerWidth.value, isRTL);
     }
     return valueToPosition(highValueShared.value, min, max, containerWidth.value, isRTL);
   });
