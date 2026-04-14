@@ -56,7 +56,13 @@ const Track: React.FC<TrackProps> = ({
       <View
         style={[
           styles.inactiveTrack,
-          { backgroundColor: inactiveColor, height, borderRadius: height / 2 },
+          { 
+            backgroundColor: inactiveColor, 
+            height, 
+            borderRadius: height / 2,
+            left: thumbSize / 2,
+            right: thumbSize / 2,
+          },
           inactiveStyle,
         ]}
       />
@@ -79,7 +85,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
   },
   inactiveTrack: {
-    width: '100%',
     position: 'absolute',
   },
   activeTrack: {
